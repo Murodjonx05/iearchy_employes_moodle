@@ -46,17 +46,23 @@ define([], function() {
     };
 
     var initRoot = function(root) {
-        var overlay = root.querySelector('#sdOverlay');
-        var closeButton = root.querySelector('#sdClose');
-        var modalImageWrap = root.querySelector('#sdModalImgWrap');
-        var modalName = root.querySelector('#sdModalName');
-        var modalPosition = root.querySelector('#sdModalPosition');
-        var modalDescription = root.querySelector('#sdModalDesc');
+        var overlay = root.querySelector('#iearchOverlay');
+        var closeButton = root.querySelector('#iearchClose');
+        var modalImageWrap = root.querySelector('#iearchModalImgWrap');
+        var modalName = root.querySelector('#iearchModalName');
+        var modalPosition = root.querySelector('#iearchModalPosition');
+        var modalDescription = root.querySelector('#iearchModalDesc');
         var lastFocused = null;
+        var isInitialized = false;
 
         if (!overlay || !closeButton || !modalImageWrap || !modalName || !modalPosition || !modalDescription) {
             return;
         }
+
+        if (root.dataset.iearchDirectoryInitialized === 'true') {
+            return;
+        }
+        root.dataset.iearchDirectoryInitialized = 'true';
 
         var closeModal = function() {
             overlay.classList.remove('is-open');
@@ -75,16 +81,16 @@ define([], function() {
             var imageUrl = card.dataset.imageUrl || '';
             var initials = card.dataset.initials || '?';
             var hasImage = card.dataset.hasImage === 'true' && imageUrl.trim() !== '';
-            var descriptionNode = card.querySelector('.sd-card__desc');
+            var descriptionNode = card.querySelector('.iearch_card__desc');
             var description = descriptionNode ? descriptionNode.textContent.trim() : '';
 
             modalImageWrap.innerHTML = '';
             if (hasImage) {
                 modalImageWrap.appendChild(
-                    createImage(imageUrl, fullname, initials, 'sd-modal__img', 'sd-modal__img-placeholder')
+                    createImage(imageUrl, fullname, initials, 'iearch_modal__img', 'iearch_modal__img-placeholder')
                 );
             } else {
-                modalImageWrap.appendChild(createPlaceholder(initials, 'sd-modal__img-placeholder'));
+                modalImageWrap.appendChild(createPlaceholder(initials, 'iearch_modal__img-placeholder'));
             }
 
             modalName.textContent = fullname;
@@ -98,17 +104,33 @@ define([], function() {
             closeButton.focus();
         };
 
-        root.querySelectorAll('.sd-card').forEach(function(card) {
-            card.addEventListener('click', function() {
-                openModal(card);
-            });
+        // Use event delegation because Moodle/YUI may re-render cards after init.
+        root.addEventListener('click', function(event) {
+            var target = event.target;
+            if (!(target instanceof Element)) {
+                return;
+            }
+            var card = target.closest('.iearch_card');
+            if (!card || !root.contains(card)) {
+                return;
+            }
+            openModal(card);
+        });
 
-            card.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    openModal(card);
-                }
-            });
+        root.addEventListener('keydown', function(event) {
+            if (event.key !== 'Enter' && event.key !== ' ') {
+                return;
+            }
+            var target = event.target;
+            if (!(target instanceof Element)) {
+                return;
+            }
+            var card = target.closest('.iearch_card');
+            if (!card || !root.contains(card)) {
+                return;
+            }
+            event.preventDefault();
+            openModal(card);
         });
 
         closeButton.addEventListener('click', closeModal);

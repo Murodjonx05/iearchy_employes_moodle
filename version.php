@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_iearchy';
-$plugin->version = 2026032001;
+$plugin->version = 2026032003;
 $plugin->requires = 2025100600;
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release = '0.2.1';

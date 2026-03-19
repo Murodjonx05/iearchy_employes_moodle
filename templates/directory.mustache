@@ -18,35 +18,28 @@
     @template mod_iearchy/directory
 }}
 <div class="mod-iearchy" data-region="mod-iearchy">
-    <header class="sd-header">
-        <span class="sd-header__eyebrow">{{header_eyebrow}}</span>
+    <header class="iearch_header">
+        <span class="iearch_header__eyebrow">{{header_eyebrow}}</span>
         <h1>{{header_title}}</h1>
-        <div class="sd-header__line"></div>
+        <div class="iearch_header__line"></div>
     </header>
 
-    {{#canmanage}}
-        <nav class="mod-iearchy__tools" aria-label="{{header_title}}">
-            <a class="mod-iearchy__tool" href="{{managelevelsurl}}">{{managelevelslabel}}</a>
-            <a class="mod-iearchy__tool" href="{{manageemployeesurl}}">{{manageemployeeslabel}}</a>
-        </nav>
-    {{/canmanage}}
-
     {{#haslevels}}
-        <div class="sd-wrapper">
+        <div class="iearch_wrapper">
             {{#levels}}
-                <section class="sd-level" data-level="{{level}}">
-                    <div class="sd-level__label">{{eyebrow}}</div>
-                    <div class="sd-level__title">{{title}}</div>
+                <section class="iearch_level" data-level="{{level}}">
+                    <div class="iearch_level__label">{{eyebrow}}</div>
+                    <div class="iearch_level__title">{{title}}</div>
 
-                    <div class="sd-grid">
+                    <div class="iearch_grid">
                         {{#employees}}
                             <article
-                                class="sd-card"
+                                class="iearch_card"
                                 role="button"
                                 tabindex="0"
                                 aria-label="{{cardaria}}"
                                 aria-haspopup="dialog"
-                                aria-controls="sdModal"
+                                aria-controls="iearchModal"
                                 title="{{openprofile}}"
                                 data-fullname="{{fullname}}"
                                 data-position="{{position}}"
@@ -54,19 +47,19 @@
                                 data-initials="{{initials}}"
                                 data-has-image="{{#hasimage}}true{{/hasimage}}{{^hasimage}}false{{/hasimage}}"
                             >
-                                <div class="sd-card__img-wrap">
+                                <div class="iearch_card__img-wrap">
                                     {{#hasimage}}
-                                        <img src="{{imageurl}}" class="sd-card__img" alt="{{fullname}}" loading="lazy">
+                                        <img src="{{imageurl}}" class="iearch_card__img" alt="{{fullname}}" loading="lazy">
                                     {{/hasimage}}
                                     {{^hasimage}}
-                                        <div class="sd-card__img-placeholder">{{initials}}</div>
+                                        <div class="iearch_card__img-placeholder">{{initials}}</div>
                                     {{/hasimage}}
                                 </div>
 
-                                <div class="sd-card__info">
-                                    <span class="sd-card__name">{{fullname}}</span>
-                                    <span class="sd-card__position">{{position}}</span>
-                                    <div class="sd-card__desc" hidden>{{description}}</div>
+                                <div class="iearch_card__info">
+                                    <span class="iearch_card__name">{{fullname}}</span>
+                                    <span class="iearch_card__position">{{position}}</span>
+                                    <div class="iearch_card__desc" hidden>{{description}}</div>
                                 </div>
                             </article>
                         {{/employees}}
@@ -77,26 +70,33 @@
     {{/haslevels}}
 
     {{^haslevels}}
-        <div class="sd-empty">{{directoryempty}}</div>
+        <div class="iearch_empty">{{directoryempty}}</div>
     {{/haslevels}}
 
-    <div class="sd-overlay" id="sdOverlay" role="dialog" aria-modal="true" aria-labelledby="sdModalName" aria-hidden="true">
-        <div class="sd-modal" id="sdModal">
-            <div class="sd-modal__band"></div>
-            <button class="sd-modal__close" id="sdClose" aria-label="{{close}}" type="button">
+    {{#canmanage}}
+        <nav class="mod-iearchy__tools" aria-label="{{header_title}}">
+            <a class="mod-iearchy__tool" href="{{managelevelsurl}}">{{managelevelslabel}}</a>
+            <a class="mod-iearchy__tool" href="{{manageemployeesurl}}">{{manageemployeeslabel}}</a>
+        </nav>
+    {{/canmanage}}
+
+    <div class="iearch_overlay" id="iearchOverlay" role="dialog" aria-modal="true" aria-labelledby="iearchModalName" aria-hidden="true">
+        <div class="iearch_modal" id="iearchModal">
+            <div class="iearch_modal__band"></div>
+            <button class="iearch_modal__close" id="iearchClose" aria-label="{{close}}" type="button">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
                     <line x1="1" y1="1" x2="13" y2="13"></line>
                     <line x1="13" y1="1" x2="1" y2="13"></line>
                 </svg>
             </button>
-            <div class="sd-modal__body">
-                <div class="sd-modal__img-wrap" id="sdModalImgWrap">
-                    <div class="sd-modal__img-placeholder">?</div>
+            <div class="iearch_modal__body">
+                <div class="iearch_modal__img-wrap" id="iearchModalImgWrap">
+                    <div class="iearch_modal__img-placeholder">?</div>
                 </div>
-                <div class="sd-modal__name" id="sdModalName"></div>
-                <div class="sd-modal__position" id="sdModalPosition"></div>
-                <div class="sd-modal__divider"></div>
-                <p class="sd-modal__desc" id="sdModalDesc"></p>
+                <div class="iearch_modal__name" id="iearchModalName"></div>
+                <div class="iearch_modal__position" id="iearchModalPosition"></div>
+                <div class="iearch_modal__divider"></div>
+                <p class="iearch_modal__desc" id="iearchModalDesc"></p>
             </div>
         </div>
     </div>
