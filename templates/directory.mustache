@@ -1,0 +1,103 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_iearchy/directory
+}}
+<div class="mod-iearchy" data-region="mod-iearchy">
+    <header class="sd-header">
+        <span class="sd-header__eyebrow">{{header_eyebrow}}</span>
+        <h1>{{header_title}}</h1>
+        <div class="sd-header__line"></div>
+    </header>
+
+    {{#canmanage}}
+        <nav class="mod-iearchy__tools" aria-label="{{header_title}}">
+            <a class="mod-iearchy__tool" href="{{managelevelsurl}}">{{managelevelslabel}}</a>
+            <a class="mod-iearchy__tool" href="{{manageemployeesurl}}">{{manageemployeeslabel}}</a>
+        </nav>
+    {{/canmanage}}
+
+    {{#haslevels}}
+        <div class="sd-wrapper">
+            {{#levels}}
+                <section class="sd-level" data-level="{{level}}">
+                    <div class="sd-level__label">{{eyebrow}}</div>
+                    <div class="sd-level__title">{{title}}</div>
+
+                    <div class="sd-grid">
+                        {{#employees}}
+                            <article
+                                class="sd-card"
+                                role="button"
+                                tabindex="0"
+                                aria-label="{{cardaria}}"
+                                aria-haspopup="dialog"
+                                aria-controls="sdModal"
+                                title="{{openprofile}}"
+                                data-fullname="{{fullname}}"
+                                data-position="{{position}}"
+                                data-image-url="{{imageurl}}"
+                                data-initials="{{initials}}"
+                                data-has-image="{{#hasimage}}true{{/hasimage}}{{^hasimage}}false{{/hasimage}}"
+                            >
+                                <div class="sd-card__img-wrap">
+                                    {{#hasimage}}
+                                        <img src="{{imageurl}}" class="sd-card__img" alt="{{fullname}}" loading="lazy">
+                                    {{/hasimage}}
+                                    {{^hasimage}}
+                                        <div class="sd-card__img-placeholder">{{initials}}</div>
+                                    {{/hasimage}}
+                                </div>
+
+                                <div class="sd-card__info">
+                                    <span class="sd-card__name">{{fullname}}</span>
+                                    <span class="sd-card__position">{{position}}</span>
+                                    <div class="sd-card__desc" hidden>{{description}}</div>
+                                </div>
+                            </article>
+                        {{/employees}}
+                    </div>
+                </section>
+            {{/levels}}
+        </div>
+    {{/haslevels}}
+
+    {{^haslevels}}
+        <div class="sd-empty">{{directoryempty}}</div>
+    {{/haslevels}}
+
+    <div class="sd-overlay" id="sdOverlay" role="dialog" aria-modal="true" aria-labelledby="sdModalName" aria-hidden="true">
+        <div class="sd-modal" id="sdModal">
+            <div class="sd-modal__band"></div>
+            <button class="sd-modal__close" id="sdClose" aria-label="{{close}}" type="button">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <line x1="1" y1="1" x2="13" y2="13"></line>
+                    <line x1="13" y1="1" x2="1" y2="13"></line>
+                </svg>
+            </button>
+            <div class="sd-modal__body">
+                <div class="sd-modal__img-wrap" id="sdModalImgWrap">
+                    <div class="sd-modal__img-placeholder">?</div>
+                </div>
+                <div class="sd-modal__name" id="sdModalName"></div>
+                <div class="sd-modal__position" id="sdModalPosition"></div>
+                <div class="sd-modal__divider"></div>
+                <p class="sd-modal__desc" id="sdModalDesc"></p>
+            </div>
+        </div>
+    </div>
+</div>
